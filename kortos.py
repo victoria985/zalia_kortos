@@ -14,7 +14,12 @@ class Card:
     def __repr__(self):
         card_print = f'{self.card_rank[self.rank]} of {self.card_suit[self.suit]}'
         return card_print
-
+    
+    def rank(self, card_rank):
+        return card_rank
+    
+    def suit(self, card_suit):
+        return card_suit
 
     def sign(self):
         if self.suit == 'Spades':
@@ -26,7 +31,7 @@ class Card:
         if self.suit == 'Diamonds':
             return u'\u2666'
     
-    def __weight(self, rank):
+    def weight(self, rank):
         for i, card_rank in enumerate(self.rank(), start=1):
             if card_rank == rank:
                 return i
