@@ -2,40 +2,51 @@ import random
 
 class Card:
 
-    def __init__(self, suit: str = '', weight: int = 0,):
+    suits = ["spades",
+             "hearts",
+             "diamonds",
+             "clubs"]
+    
+    ranks = [None, None,"2", "3",
+              "4", "5", "6", "7",
+              "8", "9", "10",
+              "Jack", "Queen",
+              "King", "Ace"]
+
+    def __init__(self, rank, suit, weight: int = 0):
+        self.rank = rank
         self.suit = suit
         self.weight = weight
+        
+    def __repr__(self):
+        v = self.ranks[self.rank] + " of " + self.suits[self.suit]
+        return v
+
 
 class Deck:
 
-    def __inir__(self, contents: list = []):
-        self.contents = contents
+    def __init__(self):
+        self.cards = []
+        for rank in range(2, 15):
+            for suit in range(4):
+                self.cards.append(Card(rank,suit))
+        random.shuffle(self.cards)
     
-    def __str__(self):
-        return f'{self.contents}'
-    def deck_creation(self, card: Card, settings: int = 0):
-        
-        # 52/4 = 13
-        weight_settings = settings/4
-        suits = ['Spades', 'Clubs', 'Diamonds', 'Clubs']
-        for c in suits:
-            card.suit = c
-            for w in range(1, weight_settings):
-                card.weight = w
-            self.contents.append(card)
-
-    def shufle(self):
-        random.shuffle(self.deck)
-
     def take_top(self):
-        pass
+        t_card = self.cards.pop(0)
+        print(t_card)
+        return t_card
     
     def take_bottom(self):
-        pass
+        b_card = self.cards.pop(len(self.cards)-1)
+        print(b_card)
+        return b_card
 
     def take_random(self):
-        r_card = random.randint(1, 52)
-        pass
+        r_number = random.randint(0, 52)
+        r_card = self.cards.pop(r_number)
+        print(r_card)
+        return r_card
 
 class GameLogic():
 
@@ -48,13 +59,11 @@ class Computer1():
         pass
 
 deck = Deck()
-deck.deck_creation
-print(deck)
-print(deck.contents)
+print(deck.cards)
+deck.take_top()
+deck.take_bottom()
+deck.take_random()
 
-
-def forkinimas(self):
-      pass
 
 
 # Kortų kaladė
