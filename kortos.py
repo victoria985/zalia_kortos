@@ -52,6 +52,11 @@ deck.deck_creation
 print(deck)
 print(deck.contents)
 
+
+    def forkinimas(self):
+      pass
+
+
 # Kortų kaladė
 # Korta: Objektas (Class)
 # def rank (2-9, T, J, Q, K, A)
