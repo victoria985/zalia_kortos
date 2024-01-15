@@ -1,3 +1,10 @@
+class Card:
+    def __init__(self):
+        pass
+
+class Deck:
+    cards = []
+
 # Kortų kaladė
 # Korta: Objektas (Class)
 # def rank (2-9, T, J, Q, K, A)
