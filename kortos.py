@@ -7,6 +7,26 @@ class Card:
         self.weight = weight
         self.color = color
 
+    
+    def update_suit(self, spades=False, clubs=False, hearts=False, diamonds=False):
+        if spades:
+            self.suit = 'Spades'
+        elif clubs:
+            self.suit = 'Clubs'
+        elif hearts:
+            self.suit = 'Hearts'
+        elif diamonds:
+            self.suit = 'Diamonds'
+        return self.suit
+    
+    def weight(self):
+        ranks_values = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'K', 'D', 'T'] 
+        return ranks_values
+    
+
+        
+    
+
 class Deck:
 
     def __inir__(self, deck: list = []):
