@@ -2,15 +2,27 @@ import random
 
 class Card:
 
-    def __init__(self, suit: str = '', weight: int = 0, color: str = ''):
+    def __init__(self, suit: str = '', weight: int = 0,):
         self.suit = suit
         self.weight = weight
-        self.color = color
 
 class Deck:
 
-    def __inir__(self, deck: list = []):
-        self.deck = deck
+    def __inir__(self, contents: list = []):
+        self.contents = contents
+    
+    def __str__(self):
+        return f'{self.contents}'
+    def deck_creation(self, card: Card, settings: int = 0):
+        
+        # 52/4 = 13
+        weight_settings = settings/4
+        suits = ['Spades', 'Clubs', 'Diamonds', 'Clubs']
+        for c in suits:
+            card.suit = c
+            for w in range(1, weight_settings):
+                card.weight = w
+            self.contents.append(card)
 
     def shufle(self):
         random.shuffle(self.deck)
@@ -35,6 +47,10 @@ class Computer1():
     def __init__(self):
         pass
 
+deck = Deck()
+deck.deck_creation
+print(deck)
+print(deck.contents)
 
 # Kortų kaladė
 # Korta: Objektas (Class)
