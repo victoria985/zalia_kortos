@@ -53,7 +53,7 @@ print(deck)
 print(deck.contents)
 
 
-    def forkinimas(self):
+def forkinimas(self):
       pass
 
 
