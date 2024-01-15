@@ -1,6 +1,9 @@
 class Card:
-    def __init__(self):
-        pass
+
+    def __init__(self, suit: str = '', weight: int = 0, color: str = ''):
+        self.suit = suit
+        self.weight = weight
+        self.color = color
 
 class Deck:
     cards = []
