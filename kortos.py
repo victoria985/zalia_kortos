@@ -1,3 +1,5 @@
+import random
+
 class Card:
 
     def __init__(self, suit: str = '', weight: int = 0, color: str = ''):
@@ -6,7 +8,22 @@ class Card:
         self.color = color
 
 class Deck:
-    cards = []
+
+    def __inir__(self, deck: list = []):
+        self.deck = deck
+
+    def shufle(self):
+        random.shuffle(self.deck)
+
+    def take_top(self):
+        pass
+    
+    def take_bottom(self):
+        pass
+
+    def take_random(self):
+        r_card = random.randint(1, 52)
+        pass
 
 # Kortų kaladė
 # Korta: Objektas (Class)
