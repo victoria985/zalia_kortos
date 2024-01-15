@@ -9,7 +9,9 @@ class Deck:
     cards = []
 
 
-# test    
+    def forkinimas(self):
+      pass
+
 
 # Kortų kaladė
 # Korta: Objektas (Class)
