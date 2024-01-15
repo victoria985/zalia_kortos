@@ -1,6 +1,10 @@
 # zalia_kortos
 2024-01-15 žalia komanda
 
+alpha 0.5
+
+added some basic game logics, like check suits or check weight, added weight modification for special cases, also added printable unicode representations of cards
+
 alpha 0.4
 
 created class Card, fully functional, created class Deck, with function to create a deck of random shufled cards, with functions to take top, botom and random cards out of deck
