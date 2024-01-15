@@ -25,6 +25,17 @@ class Deck:
         r_card = random.randint(1, 52)
         pass
 
+class GameLogic():
+
+    def __init__(self):
+        pass
+
+class Computer1():
+
+    def __init__(self):
+        pass
+
+
 # Kortų kaladė
 # Korta: Objektas (Class)
 # def rank (2-9, T, J, Q, K, A)
