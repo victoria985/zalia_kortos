@@ -8,6 +8,9 @@ class Card:
 class Deck:
     cards = []
 
+    def forkinimas(self):
+    
+
 # Kortų kaladė
 # Korta: Objektas (Class)
 # def rank (2-9, T, J, Q, K, A)
