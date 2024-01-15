@@ -1,33 +1,32 @@
 import random
-from unicards import unicard
 
 class Card:
 
-    def __init__(self, suit: str = '', weight: int = 0, color: str = '', rank: str = ''):
-        self.suit = suit
-        self.weight = weight(rank)
-        self.color = color
+    card_rank = [None, None, '2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A']
+
+    card_suit = ['Spades', 'Clubs', 'Hearts', 'Diamonds']
+
+    def __init__(self, rank: int = 0, suit: int = 0, weight: int = 0):
         self.rank = rank
+        self.suit = suit
+        self.weight = weight
+    
+    def __repr__(self):
+        card_print = f'{self.card_rank[self.rank]} of {self.card_suit[self.suit]}'
+        return card_print
 
-    def rank(self):
-        card_rank = ['2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K']
-        return card_rank
-
-    def suit(self):
-        card_suit = ['Spades', 'Clubs', 'Hearts', 'Diamonds']
-        return card_suit
 
     def sign(self):
         if self.suit == 'Spades':
-            return '\U+2660'
+            return u"\u2660"
         if self.suit == 'Clubs':
-            return 'U+2663'
+            return u'\u2663'
         if self.suit == 'Hearts':
-            return 'U+2665'
+            return u'\u2665'
         if self.suit == 'Diamonds':
-            return 'U+2666'
+            return u'\u2666'
     
-    def weight(self, rank):
+    def __weight(self, rank):
         for i, card_rank in enumerate(self.rank(), start=1):
             if card_rank == rank:
                 return i
@@ -37,28 +36,35 @@ class Deck:
 
     def __init__(self, deck: list = []):
         self.deck = deck
+    
+    def deck_creation(self):
+        self.deck = []
+        for rank in range(2, 15):
+            for suit in range(4):
+                self.deck.append(Card(rank, suit, rank))
+        random.shuffle(self.deck)
 
     def shufle(self):
         random.shuffle(self.deck)
 
     def take_top(self):
-        t_card = self.cards.pop(0)
+        t_card = self.deck.pop(0)
         print(t_card)
         return t_card
     
     def take_bottom(self):
-        b_card = self.cards.pop(len(self.cards)-1)
+        b_card = self.deck.pop(len(self.deck)-1)
         print(b_card)
         return b_card
 
     def take_random(self):
         r_number = random.randint(0, 52)
-        r_card = self.cards.pop(r_number)
+        r_card = self.deck.pop(r_number)
         print(r_card)
         return r_card
 
     def card_weight_check_all(self):
-        for card in self.cards:
+        for card in self.deck:
             print(f'{card} - {card.weight}\n')
         
     def card_suit_check(self, card1: Card, card2: Card):
@@ -77,13 +83,10 @@ class Deck:
         return check
 
     def card_weight_modifier(self, suit, value):
-        for card in deck.cards:
+        for card in deck.deck:
             if card.suit == suit:
                 card.weight += value
-    
-    def print_playing_card_deck(self):
-        for card in deck.cards:
-            print(unicard(f'{card.ranks_print[card.rank]}{card.suits[card.suit]}'))
+
 
 class GameLogic():
 
@@ -96,8 +99,8 @@ class Computer1():
         pass
 
 deck = Deck()
-print(deck.cards)
-deck.print_playing_card_deck()
+deck.deck_creation()
+print(deck.deck)
 deck.take_top()
 deck.take_bottom()
 deck.take_random()
