@@ -8,8 +8,10 @@ class Card:
 class Deck:
     cards = []
 
+
     def forkinimas(self):
-    
+      pass
+
 
 # Kortų kaladė
 # Korta: Objektas (Class)
