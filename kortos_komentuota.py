@@ -1,7 +1,7 @@
 # Importuojame integruotą python modulį random, kad galėtume kviesti random modulyje esančias funkcijas.
 import random
 
-# Objektas korta.
+# Klasės objektas korta.
 class Card:
 
 # Kintamasis/sąrašas, kuriame nurodyti kortų rangai/reikšmės.
@@ -49,7 +49,7 @@ class Card:
             if card_rank == rank:
                 return i
         
-# Objektas.
+# Klasės objektas kaladė.
 class Deck:
 
 # Konstruktorius/metodas __init__, jame nurodyti pradiniai kintamieji.
