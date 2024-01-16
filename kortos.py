@@ -54,14 +54,12 @@ class Card:
         return ranks_values
     
 
-        
-    
-
 class Deck:
 
     def __init__(self, deck: list = []):
         self.deck = deck
     
+
     def deck_creation(self):
         self.deck = []
         for rank in range(2, 15):
@@ -72,15 +70,18 @@ class Deck:
     def shufle(self):
         random.shuffle(self.deck)
 
+
     def take_top(self):
         t_card = self.deck.pop(0)
         print(t_card)
         return t_card
     
+
     def take_bottom(self):
         b_card = self.deck.pop(len(self.deck)-1)
         print(b_card)
         return b_card
+
 
     def take_random(self):
         r_number = random.randint(0, 52)
@@ -88,16 +89,19 @@ class Deck:
         print(r_card)
         return r_card
 
+
     def card_weight_check_all(self):
         for card in self.deck:
             print(f'{card} - {card.weight}\n')
         
+
     def card_suit_check(self, card1: Card, card2: Card):
         if card1.suit == card2.suit:
             return True
         else:
             False
     
+
     def card_weight_check(self, card1: Card, card2: Card):
         if card1.weight == card2.weight:
             check = 0
@@ -113,10 +117,68 @@ class Deck:
                 card.weight += value
 
 
+class Player:
+    def __init__(self, name):
+        self.name = name
+        self.hand = []
+
+
+    def draw_initial_hand(self, deck):
+        for _ in range(6):
+            self.hand.append(deck.take_top())
+
+
+    def play_card(self):
+        if not self.hand:
+            print(f"{self.name} has no cards left!")
+            return
+        card = self.hand.pop(0)
+        print(f"{self.name} played {card}")
+        return card
+
+
+    def add_to_hand(self, cards):
+        self.hand.extend(cards)
+
+
+    def __repr__(self):
+        return f"Player(name={self.name}, hand={self.hand})"
+           
+
+
 class GameLogic():
 
-    def __init__(self):
-        pass
+    def __init__(self, players):
+        self.players = players
+        self.deck = Deck()
+        self.deck.deck_creation()
+        self.current_round = 1
+
+
+    def start_game(self):
+        print("Game started!")
+        for player in self.players:
+            player.draw_initial_hand(self.deck)
+
+
+    def play_round(self):
+        print(f"Round {self.current_round}")
+        for player in self.players:
+            print(f"Player {player.name}'s turn:")
+            played_card = player.play_card()
+            if self.is_valid_play(played_card):
+                self.table.append(played_card)
+                print(f"{player.name} played {played_card}")
+                if self.check_for_capture(played_card):
+                    player.add_to_hand(self.table)
+                    self.table = []  
+                    print(f"{player.name} captured the pile!")       
+                if player.is_winner():
+                    print(f"{player.name} is the winner!")
+                    return
+            else:
+                print("Invalid play. Try again.")
+
 
 class Computer1():
 
