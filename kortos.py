@@ -33,11 +33,11 @@ class Card:
     def sign(self):
         if self.suit == 'Spades':
             return u"\u2660"
-        if self.suit == 'Clubs':
+        elif self.suit == 'Clubs':
             return u'\u2663'
-        if self.suit == 'Hearts':
+        elif self.suit == 'Hearts':
             return u'\u2665'
-        if self.suit == 'Diamonds':
+        elif self.suit == 'Diamonds':
             return u'\u2666'
 
 # Metodas naudoja for ciklą, kad priskirtume kortoms taškus.
@@ -53,13 +53,13 @@ class Card:
 class Deck:
 
 # Konstruktorius/metodas __init__, jame nurodyti pradiniai kintamieji.
-    def __init__(self, deck: list = []):
-        self.deck = deck
+    def __init__(self, deck=None):
+        self.deck = deck if deck is not None else []
 
 # Metodas deck_creation sukuria išmaišytą kaladę.
-    def deck_creation(self):
+    def deck_creation(self, setting = 6):
         self.deck = []
-        for rank in range(2, 15):
+        for rank in range(setting, 15):
             for suit in range(4):
                 self.deck.append(Card(rank, suit, rank))
         random.shuffle(self.deck)
@@ -70,19 +70,23 @@ class Deck:
 
 # Metodas grąžina kortą paimtą nuo kaladės viršaus.
     def take_top(self):
-        t_card = self.deck.pop(0)
-        print(t_card)
-        return t_card
-
+        if self.deck:
+            t_card = self.deck.pop(0)
+            print(t_card)
+            return t_card
+        else:
+            print("Deck is empty.")
+            return None
+          
 # Metodas grąžina kortą paimtą iš kaladės apačios.   
     def take_bottom(self):
-        b_card = self.deck.pop(len(self.deck)-1)
+        b_card = self.deck.pop(-1)
         print(b_card)
         return b_card
 
 # Metodas grąžina atsitiktinę kortą iš kaladės
     def take_random(self):
-        r_number = random.randint(0, 52)
+        r_number = random.randint(0, len(self.deck)-1)
         r_card = self.deck.pop(r_number)
         print(r_card)
         return r_card
@@ -94,63 +98,128 @@ class Deck:
 
 # Metodas patikrina ar dviejų kortų rūšis yra vienoda      
     def card_suit_check(self, card1: Card, card2: Card):
-        if card1.suit == card2.suit:
-            return True
-        else:
-            False
-     
+        return card1.suit == card2.suit
+
     def card_weight_check(self, card1: Card, card2: Card):
         if card1.weight == card2.weight:
-            check = 0
+            return 0
         elif card1.weight > card2.weight:
-            check = card1
+            return card1
         else:
-            check = card2
-        return check
+            return card2
 
-    def card_weight_modifier(self, suit, value):
-        for card in deck.deck:
-            if card.suit == suit:
-                card.weight += value
+    def card_weight_modifier(self, card: Card, value = 20): 
+        for cards in self.deck:
+            if cards.suit == card.suit:
+                cards.weight += value
 
+class GameLogic:
 
-class GameLogic():
+    def __init__(self, players: list = [], deck: Deck = None, table: list = [], game_hand: list = []):
+        self.players = players
+        self.deck = deck if deck is not None else Deck()
+        self.table = table
+        self.game_hand = game_hand
 
-    def __init__(self, num_players, num_cards):
-        self.num_players = num_players
-        self.num_cards = num_cards
-        self.players = []
-        self.deck = []
-        self.trump_card = None
-        self.current_player = None
+    def deal_cards(self):
+        for player in self.players:
+            if len(player.hand) < 6:
+                player.draw_cards(6 - len(player.hand), self.deck)
+
+    def power_card(self):
+        card_power = self.deck.deck[-1]
+        return card_power
     
-    def game_start(self):
-        deck.deck_creation()
-        
-    # Kiekvienam žaidėjui iš 36 kortų kaladės išdalijama po 6 kortas. Galima dalyti po vieną arba iš karto po dvi kortas. 
-    # Likusios kortos padedamos į kaladę. Apatinė kaladės korta atverčiama, ji bus koziris. 
-    # Žaidimą „Kvailys" pradeda tas, kuris turi mažiausią kozirį arba iš viso jo neturi. Žaidžiama pagal laikrodžio rodyklę.
-    # Kortą kerta didesnė tos pačios mosties (būgnas, čirvas, kryžius, pikas) korta arba koziris. 
-    # Visos atmuštosios kortos dedamos į šalį. Jei žaidėjas neturi didesnės kortos arba kozirio, pasiima padėtą kortą.
-    # Kai bent vienas iš žaidėjų nebeturi kortų, visi pasiima iš kortų kaladės tiek, kad kiekvienas turėtų po 6 kortas. 
-    # Žaidimą pralaimi susirinkęs kortas, o laimi tas žaidėjas, kuris išleidžia visas kortas.
+    def add_card(self, card: Card):
+        self.table.append(card)
+        print(self.table)
+        return self.table
+    
+    def beaten_pair(self):
+        if deck.card_weight_check(self.table[0], self.table[1]) == self.table[1]:
+            self.game_hand.append(self.table[0])
+            self.game_hand.append(self.table[1])
+            return True
+        else:
+            return False
+    
+    def discard_game_hand(self):
+        self.game_hand = []
+        return self.game_hand
 
-class Computer1():
+    def stick_game_hand(self, player):
+          player.hand += self.game_hand
+          self.discard_game_hand
+          return self.game_hand
+            
 
-    def __init__(self):
-        pass
+class Player:
+    
+    def __init__(self, name, hand=None):
+        self.name = name
+        self.hand = hand if hand is not None else []
 
+    def draw_cards(self, number: int, deck:Deck):
+        for i in range(number):
+            card = deck.take_top()
+            self.hand.append(card)
+        print(f'player hand: {self.hand}')
+        return self.hand
+    
+    def play_card(self, number: int):
+        play_card = self.hand.pop(number - 1)
+        print(play_card)
+        print(self.hand)
+        return play_card
+
+class Computer:
+
+    def __init__(self, name, level: int = 1, hand: list = []):
+        self.name = name
+        self.level = level
+        self.hand = hand
+    
+    def draw_cards(self, number: int, deck):
+        for i in range(number):
+            card = deck.take_top()
+            self.hand.append(card)
+        print(f'computer hand: {self.hand}')
+        return self.hand
+    
+    def play_card(self, number: int):
+        play_card = self.hand.pop(number)
+        print(play_card)
+        print(self.hand)
+        return play_card
+
+
+player = Player('Bob')
+aran = Computer('Aran')
+player_nr = []
+player_nr.append(player)
+player_nr.append(aran)
 deck = Deck()
 deck.deck_creation()
+game = GameLogic(player_nr, deck)
+ace = game.power_card()
+deck.card_weight_modifier(ace)
+game.deal_cards()
 print(deck.deck)
-deck.take_top()
-deck.take_bottom()
-deck.take_random()
+print(ace)
 deck.card_weight_check_all()
+print(len(deck.deck))
+card1 = player.play_card(1)
+game.add_card(card1)
+card2 = player.play_card(1)
+game.add_card(card2)
+game.beaten_pair()
+game.stick_game_hand(player)
+player.play_card(1)
+game.deal_cards()
+print(len(deck.deck))
+print(deck.deck)
 
-
-
-
+# UŽDUOTIS:
 # Kortų kaladė
 # Korta: Objektas (Class)
 # def __init__
