@@ -80,9 +80,11 @@ class Deck:
 
 class GameLogic:
 
-    def __init__(self, players: list = [], deck: Deck = None):
+    def __init__(self, players: list = [], deck: Deck = None, table: list = [], game_hand: list = []):
         self.players = players
         self.deck = deck if deck is not None else Deck()
+        self.table = table
+        self.game_hand = game_hand
 
     def deal_cards(self):
         for player in self.players:
@@ -93,8 +95,27 @@ class GameLogic:
         card_power = self.deck.deck[-1]
         return card_power
     
-    def add_card(self, card: Card, table: list = []):
-        table.append(card)
+    def add_card(self, card: Card):
+        self.table.append(card)
+        print(self.table)
+        return self.table
+    
+    def beaten_pair(self):
+        if deck.card_weight_check(self.table[0], self.table[1]) == self.table[1]:
+            self.game_hand.append(self.table[0])
+            self.game_hand.append(self.table[1])
+            return True
+        else:
+            return False
+    
+    def discard_game_hand(self):
+        self.game_hand = []
+        return self.game_hand
+
+    def stick_game_hand(self, player):
+          player.hand += self.game_hand
+          self.discard_game_hand
+          return self.game_hand
             
 
 class Player:
@@ -152,8 +173,12 @@ print(deck.deck)
 print(ace)
 deck.card_weight_check_all()
 print(len(deck.deck))
-player.play_card(1)
-player.play_card(1)
+card1 = player.play_card(1)
+game.add_card(card1)
+card2 = player.play_card(1)
+game.add_card(card2)
+game.beaten_pair()
+game.stick_game_hand(player)
 player.play_card(1)
 game.deal_cards()
 print(len(deck.deck))
