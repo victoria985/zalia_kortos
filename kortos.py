@@ -48,6 +48,8 @@ class Card:
             if card_rank == rank:
                 return i
 
+class Deck():
+    
     # Konstruktorius/metodas __init__, jame nurodyti pradiniai kintamieji.
     def __init__(self, deck=None):
         self.deck = deck if deck is not None else []
