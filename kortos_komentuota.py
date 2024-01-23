@@ -82,7 +82,7 @@ class Deck():
         print(b_card)
         return b_card
 
-    # Metodas grąžina atsitiktinę kortą iš kaladės
+    # Metodas grąžina atsitiktinę kortą iš kaladės.
     def take_random(self):
         r_number = random.randint(0, len(self.deck)-1)
         r_card = self.deck.pop(r_number)
@@ -94,11 +94,11 @@ class Deck():
         for card in self.deck:
             print(f'{card} - {card.weight}\n')
 
-    # Metodas patikrina ar dviejų kortų rūšis yra vienoda      
+    # Metodas patikrina ar dviejų kortų rūšis yra vienoda.      
     def card_suit_check(self, card1: Card, card2: Card):
         return card1.suit == card2.suit
 
-    # Metodas patikrinti kortu svorius, iskaitant ir kozerius jei yra paleidziamas metodas zemiau.
+    # Metodas kortų svorių patikrinimui, įskaitant ir kozerius jei yra paleidziamas metodas zemiau.
     # Grazina didesne korta, o jei lygu, bet nemanau kad bus tokiu atveju
     def card_weight_check(self, card1: Card, card2: Card):
         if card1.weight == card2.weight:
@@ -108,13 +108,13 @@ class Deck():
         else:
             return card2
 
-    # metodas naudojamas kozeriam. Pakeicia svori i +20 by default
+    # Metodas naudojamas pakeisti kozerių svorį į +20 by default (value = 20)
     def card_weight_modifier(self, card: Card, value = 20): 
         for cards in self.deck:
             if cards.suit == card.suit:
                 cards.weight += value
 
-# Zaidimo logika
+# Žaidimo logika
 class GameLogic:
 
     # self aprasymas

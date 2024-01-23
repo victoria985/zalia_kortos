@@ -59,7 +59,7 @@ class Deck():
             print(t_card)
             return t_card
         else:
-            print("Deck is empty.")
+            print("Kaladė tuščia.")
             return None
             
     def take_bottom(self):
@@ -116,22 +116,107 @@ class GameLogic:
         return self.table
     
     def beaten_pair(self):
-        if deck.card_weight_check(self.table[0], self.table[1]) == self.table[1]:
+        if Deck.card_weight_check(self.table[0], self.table[1]) == self.table[1]:
             self.game_hand.append(self.table[0])
             self.game_hand.append(self.table[1])
             return True
         else:
             return False
+        
+    def attack(self, attacker):
+        print(f"{attacker.name} puola.")
+        
+        table_value = None
+        if self.table:
+            table_value = self.table[0].weight
+
+        while True:
+            print(f"Stalas: {self.table}")
+            print("Ar norite pulti?")
+            attack_choice = input().lower()
+            
+            if attack_choice == 'ne':
+                break
+
+            attack_card = attacker.play_card(1)
+            self.add_card(attack_card)
+
+            for player in self.players:
+                if player != attacker and player.hand:
+                    print(f"{player.name}, ar norite primesti kortų?")
+                    contribute_choice = input().lower()
+                    if contribute_choice == 'taip':
+                        contribute_card = player.play_card(1)
+                        if contribute_card.weight == table_value:
+                            self.add_card(contribute_card)
+                        else:
+                            print(f"{player.name} negali primesti kortų.")
+            print("Puolimo pabaiga.")
+
+    def defend(self, defender):
+        print(f"{defender.name} ginasi.")
+
+        table_value = self.table[0].weight
+
+        while self.table:
+            print(f"Stalas: {self.table}")
+            print("Ar norite gintis?")
+            defend_choice = input().lower()
+
+            if defend_choice == 'ne':
+                break
+
+            defend_card = defender.play_card(1)
+
+            if defend_card.suit == self.table[0].suit and defend_card.weight > table_value:
+                print("Žaidėjas sėkmingai apsigynė.")
+                self.discard_game_hand()
+            elif defend_card.suit == self.uber_suit:
+                print("Žaidėjas sėkmingai apsigynė su kozeriu.")
+                self.discard_game_hand()
+            else:
+                print("Žaidėjas neapsigynė.")
+                self.stick_game_hand(defender)
+
+    def cleanup_turn(self):
+
+        if self.deck.deck and all(len(player.hand) >= 6 for player in self.players):
+            print("Tęsiamas ėjimas.")
+            self.start_turn()
+        else:
+            self.end_turn()
+
+    def start_turn(self):
+
+        self.deal_cards()
+
+    def end_turn(self):
+
+        print("Ėjimo pabaiga.")
+
+    def end_game(self):
+        print("Žaidimo pabaiga!")
+        winner = min(self.players, key=lambda player: len(player.hand))
+        print(f"{winner.name} laimėjo!")
     
     def discard_game_hand(self):
         self.game_hand = []
         return self.game_hand
 
     def stick_game_hand(self, player):
-          player.hand += self.game_hand
-          self.discard_game_hand
-          return self.game_hand
-            
+        player.hand += self.game_hand
+        self.discard_game_hand
+        return self.game_hand
+    
+    def get_number_of_players(self, num_players):
+        self.num_players = num_players
+        while True:
+            num_players = int(input("Įveskite žaidėjų skaičių: "))
+            if num_players >= 2 and num_players <= 6:
+                return num_players
+            else:
+                print("Įveskite skaičių nuo 2 iki 6.")
+                        
 
 class Player:
     
@@ -143,7 +228,7 @@ class Player:
         for i in range(number):
             card = deck.take_top()
             self.hand.append(card)
-        print(f'player hand: {self.hand}')
+        print(f'Žaidėjo kortos: {self.hand}')
         return self.hand
     
     def play_card(self, number: int):
@@ -163,7 +248,7 @@ class Computer:
         for i in range(number):
             card = deck.take_top()
             self.hand.append(card)
-        print(f'computer hand: {self.hand}')
+        print(f'Kompiuterio kortos: {self.hand}')
         return self.hand
     
     def play_card(self, number: int):
@@ -173,31 +258,34 @@ class Computer:
         return play_card
 
 
-player = Player('Bob')
-aran = Computer('Aran')
-player_nr = []
-player_nr.append(player)
-player_nr.append(aran)
-deck = Deck()
-deck.deck_creation()
-game = GameLogic(player_nr, deck)
-ace = game.power_card()
-deck.card_weight_modifier(ace)
-game.deal_cards()
-print(deck.deck)
-print(ace)
-deck.card_weight_check_all()
-print(len(deck.deck))
-card1 = player.play_card(1)
-game.add_card(card1)
-card2 = player.play_card(1)
-game.add_card(card2)
-game.beaten_pair()
-game.stick_game_hand(player)
-player.play_card(1)
-game.deal_cards()
-print(len(deck.deck))
-print(deck.deck)
+while True:
+
+
+# player = Player('Bob')
+# aran = Computer('Aran')
+# player_nr = []
+# player_nr.append(player)
+# player_nr.append(aran)
+# deck = Deck()
+# deck.deck_creation()
+# game = GameLogic(player_nr, deck)
+# ace = game.power_card()
+# deck.card_weight_modifier(ace)
+# game.deal_cards()
+# print(deck.deck)
+# print(ace)
+# deck.card_weight_check_all()
+# print(len(deck.deck))
+# card1 = player.play_card(1)
+# game.add_card(card1)
+# card2 = player.play_card(1)
+# game.add_card(card2)
+# game.beaten_pair()
+# game.stick_game_hand(player)
+# player.play_card(1)
+# game.deal_cards()
+# print(len(deck.deck))
+# print(deck.deck)
 
 
 # UŽDUOTIS:
