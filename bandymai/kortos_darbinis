@@ -1,0 +1,83 @@
+
+
+class Player:
+    def __init__(self, name):
+        self.name = name
+        self.hand = []
+
+
+    def draw_initial_hand(self, deck):
+        for _ in range(6):
+            self.hand.append(deck.take_top())
+
+
+    def play_card(self):
+        if not self.hand:
+            print(f"{self.name} has no cards left!")
+            return
+        card = self.hand.pop(0)
+        print(f"{self.name} played {card}")
+        return card
+
+
+    def add_to_hand(self, cards):
+        self.hand.extend(cards)
+
+
+    def __repr__(self):
+        return f"Player(name={self.name}, hand={self.hand})"
+           
+
+
+class GameLogic():
+
+    def __init__(self, players):
+        self.players = players
+        self.deck = Deck()
+        self.deck.deck_creation()
+        self.current_round = 1
+
+
+    def start_game(self):
+        print("Game started!")
+        for player in self.players:
+            player.draw_initial_hand(self.deck)
+
+
+    def play_round(self):
+        print(f"Round {self.current_round}")
+        for player in self.players:
+            print(f"Player {player.name}'s turn:")
+            played_card = player.play_card()
+            if self.is_valid_play(played_card):
+                self.table.append(played_card)
+                print(f"{player.name} played {played_card}")
+                if self.check_for_capture(played_card):
+                    player.add_to_hand(self.table)
+                    self.table = []  
+                    print(f"{player.name} captured the pile!")       
+                if player.is_winner():
+                    print(f"{player.name} is the winner!")
+                    return
+            else:
+                print("Invalid play. Try again.")
+
+
+
+
+
+# UŽDUOTIS:
+# Kortų kaladė
+# Korta: Objektas (Class)
+# def __init__
+# def rank (2-9, T, J, Q, K, A)
+# def suit (spades, clubs, hearts, diamonds)
+# def sign (suit + rank)
+# def weight
+# Kortų kaladė: Objektas (Class)
+# def deck - kortų sąrašas []
+# def shuffle
+# def take from top
+# def take from bottom
+# def take random
+# Mąstom apie žaidimą
